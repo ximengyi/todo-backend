@@ -21,4 +21,19 @@ namespace support;
 class Response extends \Webman\Http\Response
 {
 
+
+    /**
+     * Here is your custom functions.
+     */
+    public static function success( $data = null): Response
+    {
+        return json(['code' => 0, 'msg' => 'ok','data'=>$data]);
+    }
+
+    public static function fail(int $code, string $msg, string $data =null): Response
+    {
+        return json(['code' => $code, 'msg' => $msg ,'data'=> $data]);
+    }
+
+
 }
