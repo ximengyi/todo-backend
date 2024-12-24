@@ -12,4 +12,9 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-return [];
+return [
+    '' => [
+        // ... 这里省略其它中间件
+        app\middleware\AccessControl::class,
+    ]
+];

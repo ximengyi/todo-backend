@@ -27,3 +27,4 @@ Route::get('/todos/monthly-status', [app\controller\TodoController::class, 'mont
 
 
 
+Route::disableDefaultRoute();
