@@ -14,6 +14,14 @@
 
 use Webman\Route;
 
+Route::put('/todo/{id}', [app\controller\TodoController::class, 'update']);
+Route::delete('/todo/{id}', [app\controller\TodoController::class, 'delete']);
+Route::get('/todos', [app\controller\TodoController::class, 'list']);
+// 切换Todo完成状态
+Route::post('/todo/{id}/toggle', [app\controller\TodoController::class, 'toggleComplete']);
+// 获取月度完成状态
+Route::get('/todos/monthly-status', [app\controller\TodoController::class, 'monthlyStatus']);
+
 
 
 

@@ -25,14 +25,24 @@ class Response extends \Webman\Http\Response
     /**
      * Here is your custom functions.
      */
-    public static function success( $data = null): Response
+    public static function success( $data = null, string $msg = 'success'): Response
     {
-        return json(['code' => 0, 'msg' => 'ok','data'=>$data]);
+        return json(['code' => 0, 'msg' => $msg, 'data'=>$data]);
     }
 
-    public static function fail(int $code, string $msg, string $data =null): Response
+    /**
+     * 失败返回
+     * @param array $error ErrorCode常量数组 [code, message]
+     * @param mixed $data 额外的错误数据
+     * @return Response
+     */
+    public static function fail(array $error, $data = null): Response
     {
-        return json(['code' => $code, 'msg' => $msg ,'data'=> $data]);
+        return json([
+            'code' => $error[0],  // 数组第一个元素是错误码
+            'msg' => $error[1],   // 数组第二个元素是错误信息
+            'data' => $data
+        ]);
     }
 
 
