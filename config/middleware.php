@@ -11,10 +11,9 @@
  * @link      http://www.workerman.net/
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
+use app\middleware\AccessControl;
 return [
     '' => [
-        // ... 这里省略其它中间件
-        app\middleware\AccessControl::class,
+        AccessControl::class,
     ]
 ];

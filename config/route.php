@@ -13,7 +13,9 @@
  */
 
 use Webman\Route;
+use support\Response;
 
+Route::post('/todo', [app\controller\TodoController::class, 'create']);
 Route::put('/todo/{id}', [app\controller\TodoController::class, 'update']);
 Route::delete('/todo/{id}', [app\controller\TodoController::class, 'delete']);
 Route::get('/todos', [app\controller\TodoController::class, 'list']);
@@ -23,8 +25,10 @@ Route::post('/todo/{id}/toggle', [app\controller\TodoController::class, 'toggleC
 Route::get('/todos/monthly-status', [app\controller\TodoController::class, 'monthlyStatus']);
 
 
-
-
-
+Route::fallback(function(){
+    return json(['code' => 404, 'msg' => '404 not found']);
+})->middleware([
+    app\middleware\AccessControl::class,
+]);
 
 Route::disableDefaultRoute();
