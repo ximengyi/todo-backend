@@ -175,7 +175,9 @@ class TodoController
             // 计算每天的完成状态
             $result = [];
             foreach ($dailyStatus as $day => $status) {
-                $result[$day] = $status['total'] > 0 && $status['total'] == $status['completed'];
+                $temp['date'] = $day;
+                $temp['status'] = $status['total'] > 0 && $status['total'] == $status['completed'];
+                $result[] = $temp;
             }
             
             return Response::success([
