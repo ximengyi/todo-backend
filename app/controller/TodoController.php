@@ -177,6 +177,9 @@ class TodoController
             foreach ($dailyStatus as $day => $status) {
                 $temp['date'] = $day;
                 $temp['status'] = $status['total'] > 0 && $status['total'] == $status['completed'];
+                $temp['total'] =$status['total'];
+                $temp['completed'] = $status['completed'];
+                $temp['remaining'] = $status['total'] - $status['completed'];
                 $result[] = $temp;
             }
             
