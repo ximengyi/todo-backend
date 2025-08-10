@@ -15,15 +15,21 @@
 use Webman\Route;
 use support\Response;
 
-Route::post('/todo', [app\controller\TodoController::class, 'create']);
-Route::put('/todo/{id}', [app\controller\TodoController::class, 'update']);
-Route::delete('/todo/{id}', [app\controller\TodoController::class, 'delete']);
-Route::get('/todos', [app\controller\TodoController::class, 'list']);
+Route::get('/health', [app\controller\HealthController::class, 'health']);
+Route::group('/api',function () {
+    Route::group(function () {
+        Route::post('/todo', [app\controller\TodoController::class, 'create']);
+        Route::put('/todo/{id}', [app\controller\TodoController::class, 'update']);
+        Route::delete('/todo/{id}', [app\controller\TodoController::class, 'delete']);
+        Route::get('/todos', [app\controller\TodoController::class, 'list']);
 // 切换Todo完成状态
-Route::post('/todo/{id}/toggle', [app\controller\TodoController::class, 'toggleComplete']);
+        Route::post('/todo/{id}/toggle', [app\controller\TodoController::class, 'toggleComplete']);
 // 获取月度完成状态
-Route::get('/todos/monthly-status', [app\controller\TodoController::class, 'monthlyStatus']);
-
+        Route::get('/todos/monthly-status', [app\controller\TodoController::class, 'monthlyStatus']);
+    })->middleware([
+        app\middleware\AccessControl::class
+    ]);
+});
 
 Route::fallback(function(){
     return json(['code' => 404, 'msg' => '404 not found']);

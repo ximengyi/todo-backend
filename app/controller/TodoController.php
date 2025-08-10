@@ -20,7 +20,7 @@ class TodoController
             $data = Validator::input($request->post(), [
                 'content' => Validator::Length(1, 65535)->setName('内容'),
                 'sort' => Validator::Digit()->setName('排序')->setDefault(0),
-                'status' => Validator::Digit()->setName('状态')->setDefault(0),
+                'status' => 0,
                 'group_id' => Validator::Digit()->setName('组id')->setDefault(0),
             ]);
 
@@ -42,13 +42,21 @@ class TodoController
     {
         try {
             $data = Validator::input($request->post(), [
-                'content' => Validator::Length(1, 65535)->setName('内容'),
-                'sort' => Validator::Digit()->setName('排序'),
-                'status' => Validator::Digit()->setName('状态'),
-                'group_id' => Validator::Digit()->setName('组id'),
+                'sort' => Validator::number()->setName('排序')->setDefault(-1),
+                'status' => Validator::number()->setName('状态')->setDefault(-1),
+                'group_id' => Validator::number()->setName('组id')->setDefault(-1),
             ]);
         } catch (ValidationException $e) {
             return Response::fail(ErrorCode::PARAM_VALID_FAIL, $e->getMessage());
+        }
+
+        // 过滤掉值为null的参数
+        $updateData = array_filter($data, function($value) {
+            return $value != -1;
+        });
+
+        if (empty($updateData)) {
+            return Response::fail(ErrorCode::TODO_UPDATE_FAIL, '未提供有效更新参数');
         }
 
         $todo = Todo::find($id);
@@ -56,7 +64,7 @@ class TodoController
             return Response::fail(ErrorCode::TODO_NOT_FOUND);
         }
         
-        if (!$todo->update($data)) {
+        if (!$todo->update($updateData)) {
             return Response::fail(ErrorCode::TODO_UPDATE_FAIL);
         }
         return Response::success($todo);
