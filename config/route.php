@@ -17,6 +17,13 @@ use support\Response;
 
 Route::get('/health', [app\controller\HealthController::class, 'health']);
 Route::group('/api',function () {
+    // 登录相关路由（不需要认证）
+    Route::post('/login', [app\controller\LoginController::class, 'login']);
+    Route::post('/register', [app\controller\LoginController::class, 'register']);
+    Route::post('/logout', [app\controller\LoginController::class, 'logout']);
+    Route::get('/user/info', [app\controller\LoginController::class, 'info']);
+    
+    // 需要认证的路由
     Route::group(function () {
         Route::post('/todo', [app\controller\TodoController::class, 'create']);
         Route::put('/todo/{id}', [app\controller\TodoController::class, 'update']);
@@ -27,7 +34,8 @@ Route::group('/api',function () {
 // 获取月度完成状态
         Route::get('/todos/monthly-status', [app\controller\TodoController::class, 'monthlyStatus']);
     })->middleware([
-        app\middleware\AccessControl::class
+        app\middleware\AccessControl::class,
+        app\middleware\AuthCheck::class
     ]);
 });
 
